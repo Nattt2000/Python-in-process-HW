@@ -52,10 +52,10 @@ def test_duplication(attempt: str) -> str:
     If not then writes "right input".
     """
     if len(attempt) == len(set(attempt)):
-        result = "right input"
+        output = "right input"
     else:
-        result = "wrong input"
-    return result
+        output = "wrong input"
+    return output
 
 
 def compare_bull_cow(secret: str, attempt: str) -> dict:
@@ -64,17 +64,17 @@ def compare_bull_cow(secret: str, attempt: str) -> dict:
     If finds a match of a digit without a match of the location then writes cow.
     If finds a match of a digit together with a match of its location then writes bull.
     """
-    counts = {"bull": 0, "cow": 0}
+    counts_dict = {"bull": 0, "cow": 0}
     for i in range(len(secret)):
         for j in range(len(attempt)):
             if i == j and secret[i] == attempt[j]:
-                counts["bull"] += 1
+                counts_dict["bull"] += 1
             if i != j and secret[i] == attempt[j]:
-                counts["cow"] += 1
-    return counts
+                counts_dict["cow"] += 1
+    return counts_dict
 
 
-def add_s(key_1: str, key_2: str, counts: dict) -> str:
+def add_s(key_1: str, key_2: str, counts_dict: dict) -> str:
     """
     Looks at values of given keys.
     If these values eaqual 0 or bigger than 1, adds letter 's' behind the keys.
@@ -83,14 +83,14 @@ def add_s(key_1: str, key_2: str, counts: dict) -> str:
     Writes a result such as 'value_1 key_1, value_2 key_2'.
     """
     list_new_keys = []
-    for key in counts:
-        if counts[key] > 1 or counts[key] == 0:
+    for key in counts_dict:
+        if counts_dict[key] > 1 or counts_dict[key] == 0:
             new_key = key + "s"
             list_new_keys.append(new_key)
         else:
             new_key = key
             list_new_keys.append(new_key)
-    result = f"{counts[key_1]} {list_new_keys[0]}, {counts[key_2]} {list_new_keys[1]}"
+    result = f"{counts_dict[key_1]} {list_new_keys[0]}, {counts_dict[key_2]} {list_new_keys[1]}"
     return result
 
 
@@ -128,12 +128,12 @@ def run_game() -> None:
                     print("The digits must be unique.")
                     print(separator)
                 else:
-                    counts = compare_bull_cow(secret_number_str, attempt_number_str)
-                    result = add_s("bull", "cow", counts)
-                    if counts["bull"] == 4 and counts["cow"] == 0:
+                    counts_dict = compare_bull_cow(secret_number_str, attempt_number_str)
+                    result = add_s("bull", "cow", counts_dict)
+                    if counts_dict["bull"] == 4 and counts_dict["cow"] == 0:
                         count_attempts += 1
                         list_results.append(result)
-                        if (count_attempts) == 1:
+                        if (counts_dict) == 1:
                             print(f"Correct, you've guessed the right number in {count_attempts} guess!")
                         else:
                             print(f"Correct, you've guessed the right number in {count_attempts} guesses!")
